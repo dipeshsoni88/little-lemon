@@ -1,18 +1,13 @@
+import React from 'react';
+import Nav from './Nav';
+import Main from './Main';
 import './App.css';
-import Header from './Header.js';
-import Nav from './Nav.js';
-import Main from './Main.js';
-import Footer from './Footer.js';
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-        <Header></Header>
-        <Nav></Nav>
-        <Main></Main>
-        <Footer></Footer>
-    </div>
+    <>
+      <Nav />
+      <Main />
+    </>
   );
 }
-
-export default App;

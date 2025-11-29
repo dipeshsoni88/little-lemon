@@ -1,11 +1,20 @@
 import './App.css';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-function Nav() {
+export default function Nav() {
   return (
-    <nav className="App">
-        Navigation under construction.
+    <nav className="nav">
+      <div className="nav-left">
+        <Link to="/" className="logo">Little Lemon</Link>
+      </div>
+      <ul className="nav-links">
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/chicago">Chicago</Link></li>
+        <li><Link to="/specials">Specials</Link></li>
+        <li><Link to="/booking">Booking</Link></li>
+        <li><Link to="/testimonials">Testimonials</Link></li>
+      </ul>
     </nav>
   );
 }
-
-export default Nav;
