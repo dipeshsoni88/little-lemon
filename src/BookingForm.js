@@ -6,6 +6,7 @@ export default function BookingForm({ onSubmit, availableTimes, dispatch }) {
   const [guests, setGuests] = useState(1);
   const [occasion, setOccasion] = useState('Birthday');
   const [minDate, setMinDate] = useState('');
+  const [isFormValid, setIsFormValid] = useState(false);
 
   // Set minimum date to today on component mount
   useEffect(() => {
@@ -16,6 +17,12 @@ export default function BookingForm({ onSubmit, availableTimes, dispatch }) {
     const todayISO = `${yyyy}-${mm}-${dd}`;
     setMinDate(todayISO);
   }, []);
+
+  // Validate form whenever fields change
+  useEffect(() => {
+    const isValid = date && time && guests >= 1 && guests <= 20 && occasion;
+    setIsFormValid(Boolean(isValid));
+  }, [date, time, guests, occasion]);
 
   // helper: convert "yyyy-mm-dd" -> "dd-MMM-yyyy" (e.g. 05-Nov-2025)
   function formatDateISOToDDMMMYYYY(isoDate) {
@@ -160,18 +167,21 @@ export default function BookingForm({ onSubmit, availableTimes, dispatch }) {
       <input
         type="submit"
         value="Make Your reservation"
+        disabled={!isFormValid}
         style={{
           padding: '10px',
-          background: '#2e7d32',
-          color: '#fff',
+          background: isFormValid ? '#2e7d32' : '#ccc',
+          color: isFormValid ? '#fff' : '#999',
           border: 'none',
           borderRadius: 4,
-          cursor: 'pointer',
+          cursor: isFormValid ? 'pointer' : 'not-allowed',
           fontSize: '1rem',
           fontWeight: 600,
           marginTop: '10px',
-          width: '100%'
+          width: '100%',
+          transition: 'background-color 0.3s ease'
         }}
+        title={!isFormValid ? 'Please fill in all required fields correctly' : 'Submit your reservation'}
       />
     </form>
   );

@@ -39,7 +39,7 @@ describe("App Component", () => {
 
   test("navigation contains home link", () => {
     renderApp();
-    const homeLink = screen.getByRole("link", { name: /home/i });
+    const homeLink = screen.getByRole("link", { name: /^home$/i });
     expect(homeLink).toBeInTheDocument();
   });
 
