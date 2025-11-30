@@ -8,6 +8,9 @@ export default function App() {
     <>
       <Nav />
       <Main />
+      <footer role="contentinfo" style={{ marginTop: '4rem', padding: '2rem', background: '#f5f5f5', textAlign: 'center' }}>
+        <p>&copy; 2025 Little Lemon. All rights reserved.</p>
+      </footer>
     </>
   );
 }

@@ -2,9 +2,9 @@ import './App.css';
 
 function Main() {
   return (
-    <main className="Main">
-        Homepage under construction.
-    </main>
+    <section className="Main">
+        Body content under construction.
+    </section>
   );
 }
 
