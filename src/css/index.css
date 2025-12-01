@@ -1,3 +1,4 @@
+/* Copied from src/index.css */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -12,7 +13,6 @@ code {
     monospace;
 }
 
-/* Flex example: single-axis responsive row that wraps */
 .flex-row {
   display: grid;
   gap: 1rem;
@@ -20,23 +20,19 @@ code {
   align-items: start;
 }
 
-/* ensure children fill grid cells and can shrink */
 .flex-row > * {
   width: 100%;
   min-width: 0;
 }
 
-/* Grid example: responsive grid that auto-fits columns */
 .responsive-grid {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
-/* Example breakpoint for layout changes if needed */
 @media (max-width: 600px) {
   .responsive-grid {
     grid-template-columns: 1fr;
   }
 }
-

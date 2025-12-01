@@ -1,5 +1,5 @@
-import './App.css';
 import React, { useReducer } from 'react';
+import '../css/App.css';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import HomePage from './HomePage';
 import Chicago from './Chicago';
@@ -9,9 +9,6 @@ import Testimonials from './Testimonials';
 import ConfirmedBooking from './ConfirmedBooking';
 
 function initializeTimes() {
-  // Try to load initial times from the external API (if provided by the
-  // injected script). If the API isn't available, fall back to a sensible
-  // static list.
   try {
     const today = new Date();
     const yyyy = today.getFullYear();
@@ -23,9 +20,7 @@ function initializeTimes() {
       const times = window.fetchAPI(todayISO);
       if (Array.isArray(times) && times.length > 0) return times;
     }
-  } catch (e) {
-    // ignore and fall back
-  }
+  } catch (e) {}
 
   return [
     '11:00','12:00','13:00','14:00','15:00','16:00',
@@ -36,22 +31,14 @@ function initializeTimes() {
 function updateTimes(availableTimes, action) {
   if (action.type === 'UPDATE_TIMES') {
     const selectedDate = action.payload;
-
-    // If no date provided, return initial times
     if (!selectedDate) return initializeTimes();
-
-    // Prefer the external fetchAPI if available. It should accept an ISO
-    // date string (yyyy-mm-dd) and return an array of times.
     try {
       if (typeof window.fetchAPI === 'function') {
         const times = window.fetchAPI(selectedDate);
         if (Array.isArray(times)) return times;
       }
-    } catch (e) {
-      // ignore and fall back to local logic
-    }
+    } catch (e) {}
 
-    // Fallback behaviour: if selected date is today, filter out past times
     const today = new Date();
     const selectedDateObj = new Date(selectedDate);
     const isToday = selectedDateObj.toDateString() === today.toDateString();
@@ -75,13 +62,11 @@ export default function Main() {
   const [availableTimes, dispatch] = useReducer(updateTimes, [], initializeTimes);
   const navigate = useNavigate();
 
-  // Submit booking form data to the external API
   function submitForm(formData) {
     try {
       if (typeof window.submitAPI === 'function') {
         const success = window.submitAPI(formData);
         if (success) {
-          // Navigate to confirmation page on successful submission
           navigate('/confirmed');
           return;
         }
@@ -89,7 +74,6 @@ export default function Main() {
     } catch (e) {
       console.error('Error submitting form:', e);
     }
-    // Optionally: show error message to user or retry
   }
 
   return (

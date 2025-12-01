@@ -5,7 +5,6 @@ export default function ConfirmedBooking() {
   const mainRef = useRef(null);
 
   useEffect(() => {
-    // Move focus to the main content for screen reader users
     mainRef.current?.focus();
   }, []);
 

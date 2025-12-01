@@ -4,11 +4,12 @@ export default function BookingForm({ onSubmit, availableTimes, dispatch }) {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [guests, setGuests] = useState(1);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [occasion, setOccasion] = useState('Birthday');
   const [minDate, setMinDate] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
 
-  // Set minimum date to today on component mount
   useEffect(() => {
     const today = new Date();
     const yyyy = today.getFullYear();
@@ -18,13 +19,11 @@ export default function BookingForm({ onSubmit, availableTimes, dispatch }) {
     setMinDate(todayISO);
   }, []);
 
-  // Validate form whenever fields change
   useEffect(() => {
-    const isValid = date && time && guests >= 1 && guests <= 20 && occasion;
+    const isValid = date && time && guests >= 1 && guests <= 20 && occasion && firstName.trim() && lastName.trim();
     setIsFormValid(Boolean(isValid));
-  }, [date, time, guests, occasion]);
+  }, [date, time, guests, occasion, firstName, lastName]);
 
-  // helper: convert "yyyy-mm-dd" -> "dd-MMM-yyyy" (e.g. 05-Nov-2025)
   function formatDateISOToDDMMMYYYY(isoDate) {
     if (!isoDate) return '';
     const [y, m, d] = isoDate.split('-');
@@ -32,7 +31,6 @@ export default function BookingForm({ onSubmit, availableTimes, dispatch }) {
     return `${d.padStart(2,'0')}-${months[Number(m) - 1]}-${y}`;
   }
 
-  // helper: convert "dd-MMM-yyyy" -> "yyyy-mm-dd" for input value
   function formatDateDDMMMYYYYToISO(displayDate) {
     if (!displayDate) return '';
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -47,7 +45,6 @@ export default function BookingForm({ onSubmit, availableTimes, dispatch }) {
   function handleDateChange(e) {
     const isoDate = e.target.value;
     setDate(isoDate);
-    // Dispatch action to update available times based on selected date
     dispatch({ type: 'UPDATE_TIMES', payload: isoDate });
   }
 
@@ -63,8 +60,7 @@ export default function BookingForm({ onSubmit, availableTimes, dispatch }) {
   function handleSubmit(e) {
     e.preventDefault();
     const formattedDate = formatDateISOToDDMMMYYYY(date);
-    const booking = { date: formattedDate, time, guests, occasion };
-    // Call the submitForm function passed from Main component
+    const booking = { date: formattedDate, time, guests, occasion, firstName, lastName };
     if (onSubmit) onSubmit(booking);
     else console.log('Booking submitted:', booking);
   }
@@ -85,61 +81,27 @@ export default function BookingForm({ onSubmit, availableTimes, dispatch }) {
   )}")`;
 
   const displayValue = date ? formatDateISOToDDMMMYYYY(date) : '';
+  const hiddenDateRef = React.useRef(null);
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 20, width: '100%', maxWidth: '360px', margin: '0 auto' }}>
-      {/* Heading added for tests/UI */}
       <h2 style={{ margin: 0, color: '#1b5e20' }}>Book Now</h2>
-      {/* Hidden marker for tests that look for exact string "BookingForm" */}
       <div style={{ display: 'none' }} aria-hidden="true">BookingForm</div>
       <label htmlFor="res-date" style={{ fontWeight: 600, marginBottom: '-10px' }}>Choose date</label>
 
-      {/* Hidden native date input for picker functionality */}
-      <input
-        id="res-date-hidden"
-        type="date"
-        value={date}
-        onChange={handleDateChange}
-        min={minDate}
-        required
-        aria-describedby="date-help"
-        style={{
-          display: 'none'
-        }}
-      />
+      <label htmlFor="first-name" style={{ fontWeight: 600, marginBottom: '-10px' }}>First Name</label>
+      <input id="first-name" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} required aria-label="First name" style={controlStyle} />
 
-      {/* Visible input that displays formatted dd-MMM-yyyy */}
-      <input
-        id="res-date"
-        type="text"
-        placeholder="dd-MMM-yyyy"
-        aria-label="Reservation date"
-        aria-controls="res-date-hidden"
-        aria-describedby="date-help"
-        value={displayValue}
-        onFocus={(e) => {
-          document.getElementById('res-date-hidden').showPicker?.();
-        }}
-        onInput={handleDateInput}
-        style={{
-          ...controlStyle,
-          backgroundImage: calendarIcon,
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'right 10px center'
-        }}
-      />
+      <label htmlFor="last-name" style={{ fontWeight: 600, marginBottom: '-10px' }}>Last Name</label>
+      <input id="last-name" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} required aria-label="Last name" style={controlStyle} />
+
+      <input ref={hiddenDateRef} id="res-date-hidden" data-testid="res-date-hidden" type="date" value={date} onChange={handleDateChange} min={minDate} required aria-describedby="date-help" style={{ display: 'none' }} />
+
+      <input id="res-date" type="text" placeholder="dd-MMM-yyyy" aria-label="Reservation date" aria-controls="res-date-hidden" aria-describedby="date-help" value={displayValue} onFocus={() => { hiddenDateRef.current?.showPicker?.(); }} onInput={handleDateInput} style={{ ...controlStyle, backgroundImage: calendarIcon, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center' }} />
       <div id="date-help" style={{ display: 'none' }}>Enter a valid date in dd-MMM-yyyy format or use the native date picker.</div>
 
       <label htmlFor="res-time" style={{ fontWeight: 600, marginBottom: '-10px' }}>Choose time</label>
-      <select
-        id="res-time"
-        aria-label="Reservation time"
-        value={time}
-        onChange={(e) => setTime(e.target.value)}
-        required
-        disabled={!date || availableTimes.length === 0}
-        style={{...controlStyle, opacity: !date || availableTimes.length === 0 ? 0.6 : 1, cursor: !date || availableTimes.length === 0 ? 'not-allowed' : 'pointer'}}
-      >
+      <select id="res-time" aria-label="Reservation time" value={time} onChange={(e) => setTime(e.target.value)} required disabled={!date || availableTimes.length === 0} style={{...controlStyle, opacity: !date || availableTimes.length === 0 ? 0.6 : 1, cursor: !date || availableTimes.length === 0 ? 'not-allowed' : 'pointer'}}>
         <option value="">{availableTimes.length === 0 ? 'No times available' : 'Select a time'}</option>
         {availableTimes.map((t) => (
           <option key={t} value={t}>{t}</option>
@@ -147,53 +109,17 @@ export default function BookingForm({ onSubmit, availableTimes, dispatch }) {
       </select>
 
       <label htmlFor="guests" style={{ fontWeight: 600, marginBottom: '-10px' }}>Number of guests</label>
-      <input
-        id="guests"
-        type="number"
-        min="1"
-        max="20"
-        value={guests}
-        onChange={(e) => setGuests(Number(e.target.value))}
-        required
-        style={controlStyle}
-        aria-label="Number of guests"
-        aria-describedby="guests-help"
-      />
+      <input id="guests" type="number" min="1" max="20" value={guests} onChange={(e) => setGuests(Number(e.target.value))} required style={controlStyle} aria-label="Number of guests" aria-describedby="guests-help" />
       <div id="guests-help" style={{ display: 'none' }}>Enter number of guests between 1 and 20.</div>
 
       <label htmlFor="occasion" style={{ fontWeight: 600, marginBottom: '-10px' }}>Occasion</label>
-      <select
-        id="occasion"
-        aria-label="Occasion"
-        value={occasion}
-        onChange={(e) => setOccasion(e.target.value)}
-        style={controlStyle}
-      >
+      <select id="occasion" aria-label="Occasion" value={occasion} onChange={(e) => setOccasion(e.target.value)} style={controlStyle}>
         <option value="Birthday">Birthday</option>
         <option value="Anniversary">Anniversary</option>
         <option value="Engagement">Engagement</option>
       </select>
 
-      <input
-        type="submit"
-        value="Make Your reservation"
-        aria-label="On Click"
-        disabled={!isFormValid}
-        style={{
-          padding: '10px',
-          background: isFormValid ? '#2e7d32' : '#ccc',
-          color: isFormValid ? '#fff' : '#999',
-          border: 'none',
-          borderRadius: 4,
-          cursor: isFormValid ? 'pointer' : 'not-allowed',
-          fontSize: '1rem',
-          fontWeight: 600,
-          marginTop: '10px',
-          width: '100%',
-          transition: 'background-color 0.3s ease'
-        }}
-        title={!isFormValid ? 'Please fill in all required fields correctly' : 'Submit your reservation'}
-      />
+      <input type="submit" value="Make Your reservation" aria-label="On Click" disabled={!isFormValid} style={{ padding: '10px', background: isFormValid ? '#2e7d32' : '#ccc', color: isFormValid ? '#fff' : '#999', border: 'none', borderRadius: 4, cursor: isFormValid ? 'pointer' : 'not-allowed', fontSize: '1rem', fontWeight: 600, marginTop: '10px', width: '100%', transition: 'background-color 0.3s ease' }} title={!isFormValid ? 'Please fill in all required fields correctly' : 'Submit your reservation'} />
     </form>
   );
 }

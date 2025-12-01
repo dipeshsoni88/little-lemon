@@ -1,9 +1,7 @@
-import { render, screen } from "@testing-library/react";
-// user-event is available if needed; avoid using `setup()` to stay compatible
-// with older installed versions in CI/local envs.
-import userEvent from "@testing-library/user-event";
+import { render, screen, within } from "@testing-library/react";
+// userEvent intentionally unused in this file
 import { BrowserRouter } from "react-router-dom";
-import App from "./App";
+import App from "../js/App";
 
 describe("App Component", () => {
   const renderApp = () =>
@@ -57,7 +55,8 @@ describe("App Component", () => {
 
   test("navigation contains specials link", () => {
     renderApp();
-    const specialsLink = screen.getByRole("link", { name: /specials/i });
+    const nav = screen.getByRole('navigation');
+    const specialsLink = within(nav).getByRole("link", { name: /specials/i });
     expect(specialsLink).toBeInTheDocument();
   });
 
