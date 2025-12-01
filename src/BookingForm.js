@@ -102,6 +102,7 @@ export default function BookingForm({ onSubmit, availableTimes, dispatch }) {
         onChange={handleDateChange}
         min={minDate}
         required
+        aria-describedby="date-help"
         style={{
           display: 'none'
         }}
@@ -112,6 +113,9 @@ export default function BookingForm({ onSubmit, availableTimes, dispatch }) {
         id="res-date"
         type="text"
         placeholder="dd-MMM-yyyy"
+        aria-label="Reservation date"
+        aria-controls="res-date-hidden"
+        aria-describedby="date-help"
         value={displayValue}
         onFocus={(e) => {
           document.getElementById('res-date-hidden').showPicker?.();
@@ -124,10 +128,12 @@ export default function BookingForm({ onSubmit, availableTimes, dispatch }) {
           backgroundPosition: 'right 10px center'
         }}
       />
+      <div id="date-help" style={{ display: 'none' }}>Enter a valid date in dd-MMM-yyyy format or use the native date picker.</div>
 
       <label htmlFor="res-time" style={{ fontWeight: 600, marginBottom: '-10px' }}>Choose time</label>
       <select
         id="res-time"
+        aria-label="Reservation time"
         value={time}
         onChange={(e) => setTime(e.target.value)}
         required
@@ -150,11 +156,15 @@ export default function BookingForm({ onSubmit, availableTimes, dispatch }) {
         onChange={(e) => setGuests(Number(e.target.value))}
         required
         style={controlStyle}
+        aria-label="Number of guests"
+        aria-describedby="guests-help"
       />
+      <div id="guests-help" style={{ display: 'none' }}>Enter number of guests between 1 and 20.</div>
 
       <label htmlFor="occasion" style={{ fontWeight: 600, marginBottom: '-10px' }}>Occasion</label>
       <select
         id="occasion"
+        aria-label="Occasion"
         value={occasion}
         onChange={(e) => setOccasion(e.target.value)}
         style={controlStyle}
@@ -167,6 +177,7 @@ export default function BookingForm({ onSubmit, availableTimes, dispatch }) {
       <input
         type="submit"
         value="Make Your reservation"
+        aria-label="On Click"
         disabled={!isFormValid}
         style={{
           padding: '10px',

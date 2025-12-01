@@ -93,7 +93,7 @@ export default function Main() {
   }
 
   return (
-    <main role="main">
+    <main id="main-content" role="main" tabIndex={-1}>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/chicago" element={<Chicago />} />

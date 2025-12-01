@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function ConfirmedBooking() {
+  const mainRef = useRef(null);
+
+  useEffect(() => {
+    // Move focus to the main content for screen reader users
+    mainRef.current?.focus();
+  }, []);
+
   return (
     <article>
-      <section style={{ textAlign: 'center', padding: '3rem 1rem' }}>
+      <section ref={mainRef} tabIndex={-1} aria-live="polite" role="status" style={{ textAlign: 'center', padding: '3rem 1rem' }}>
         <h1 style={{ color: '#1b5e20', marginBottom: '1rem' }}>Booking Confirmed!</h1>
         <p style={{ fontSize: '1.1rem', marginBottom: '2rem' }}>
           Your reservation has been successfully confirmed. 
