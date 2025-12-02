@@ -12,7 +12,8 @@ export default function Testimonials() {
   return (
     <article>
       <section>
-        <h1>What Do Our Customers Think?</h1>
+        <h1>Customer Testimonials</h1>
+        <p>Hear from our guests about their dining experiences at Little Lemon.</p>
       </section>
 
       <section className="responsive-grid">

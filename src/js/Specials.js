@@ -28,24 +28,23 @@ export default function Specials() {
   return (
     <article>
       <section>
-        <h1>This Week's Specials</h1>
-        <p>Try our featured dishes — available for dine-in or delivery.</p>
+        <h1>Menu Specials</h1>
+        <p>Discover seasonal dishes and chef specials crafted with fresh ingredients.</p>
         <p>
-          <a className="cta" href="/booking">Reserve a Table</a>
-          {' '}
+          <a className="cta" href="/booking">Reserve a Table</a>{' '}
           <a className="cta secondary" href="/specials">View Full Menu</a>
         </p>
       </section>
 
       <section className="responsive-grid">
         {specials.map((s) => (
-          <div className="card" key={s.title}>
+          <article className="card" key={s.title}>
             <img src={s.img} alt={s.title} />
             <h3>{s.title}</h3>
             <p style={{ fontWeight: 700 }}>{formatter.format(s.price)}</p>
             <p>{s.desc}</p>
             <p><a className="cta" href="/booking">Order a delivery</a></p>
-          </div>
+          </article>
         ))}
       </section>
     </article>

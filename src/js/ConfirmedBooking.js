@@ -20,23 +20,29 @@ export default function ConfirmedBooking() {
           We look forward to serving you. If you have any questions, 
           please don't hesitate to contact us.
         </p>
-        <Link 
-          to="/" 
-          style={{
-            display: 'inline-block',
-            padding: '0.75rem 1.5rem',
-            background: '#2e7d32',
-            color: '#fff',
-            textDecoration: 'none',
-            borderRadius: '4px',
-            fontWeight: 600,
-            transition: 'background-color 0.3s ease'
-          }}
-          onMouseEnter={(e) => e.target.style.background = '#1b5e20'}
-          onMouseLeave={(e) => e.target.style.background = '#2e7d32'}
-        >
-          Back to Home
-        </Link>
+          <address>
+            <strong>Little Lemon</strong><br />
+            69 Vico Araratiano<br />
+            Chicago, IL 60601<br />
+            Phone: (709) 879-4459
+          </address>
+          <Link 
+            to="/" 
+            style={{
+              display: 'inline-block',
+              padding: '0.75rem 1.5rem',
+              background: '#2e7d32',
+              color: '#fff',
+              textDecoration: 'none',
+              borderRadius: '4px',
+              fontWeight: 600,
+              transition: 'background-color 0.3s ease'
+            }}
+            onMouseEnter={(e) => e.target.style.background = '#1b5e20'}
+            onMouseLeave={(e) => e.target.style.background = '#2e7d32'}
+          >
+            Back to Home
+          </Link>
       </section>
     </article>
   );

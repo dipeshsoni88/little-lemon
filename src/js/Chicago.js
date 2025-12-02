@@ -5,9 +5,10 @@ export default function Chicago() {
   return (
     <article>
       <section>
-        <h1>Little Lemon — Chicago</h1>
+        <img src="/assets/images/greek-salad.jpg" alt="Greek salad" className="hero-image" />
+        <h1>Chicago — Little Lemon</h1>
         <p>
-          Little Lemon Chicago is a family owned Mediterranean restaurant located in the heart of the city. The restaurant is run by brothers Mario and Adrian, who bring traditional recipes with a modern twist.
+          Little Lemon is a charming neighbourhood bistro, offering a warm atmosphere and a menu inspired by Mediterranean flavours. Enjoy handcrafted dishes using fresh, local ingredients.
         </p>
       </section>
 

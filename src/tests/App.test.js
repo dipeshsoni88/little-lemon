@@ -43,7 +43,8 @@ describe("App Component", () => {
 
   test("navigation contains booking link", () => {
     renderApp();
-    const bookingLink = screen.getByRole("link", { name: /booking/i });
+    const nav = screen.getByRole('navigation');
+    const bookingLink = within(nav).getByRole("link", { name: /reservations|booking/i });
     expect(bookingLink).toBeInTheDocument();
   });
 
@@ -56,7 +57,7 @@ describe("App Component", () => {
   test("navigation contains specials link", () => {
     renderApp();
     const nav = screen.getByRole('navigation');
-    const specialsLink = within(nav).getByRole("link", { name: /specials/i });
+    const specialsLink = within(nav).getByRole("link", { name: /menu|specials/i });
     expect(specialsLink).toBeInTheDocument();
   });
 
@@ -81,7 +82,8 @@ describe("App Component", () => {
 
   test("booking link has correct href", () => {
     renderApp();
-    const bookingLink = screen.getByRole("link", { name: /booking/i });
+    const nav = screen.getByRole('navigation');
+    const bookingLink = within(nav).getByRole("link", { name: /reservations|booking/i });
     expect(bookingLink).toHaveAttribute("href", "/booking");
   });
 });

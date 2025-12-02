@@ -14,20 +14,20 @@ describe('Static pages content', () => {
 
   test('Chicago page contains location heading and contact info', () => {
     render(<Chicago />);
-    expect(screen.getByRole('heading', { name: /little lemon — chicago/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /chicago — little lemon|little lemon — chicago/i })).toBeInTheDocument();
     expect(screen.getByText(/69 Vico Araratiano/i)).toBeInTheDocument();
   });
 
   test('Specials page lists specials with titles and prices', () => {
     render(<Specials />);
-    expect(screen.getByRole('heading', { name: /this week's specials/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /menu specials|this week's specials/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /Greek salad/i })).toBeInTheDocument();
     expect(screen.getByText(/\$12.99/)).toBeInTheDocument();
   });
 
   test('Testimonials page shows customer reviews', () => {
     render(<Testimonials />);
-    expect(screen.getByRole('heading', { name: /what do our customers think\?/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /customer testimonials|what do our customers think\?/i })).toBeInTheDocument();
     expect(screen.getByText(/Seriously cannot stop thinking/i)).toBeInTheDocument();
   });
 });
